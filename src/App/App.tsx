@@ -1,14 +1,15 @@
 import * as React from "react";
+
+import PartyPage from "../Page/PartyPage/PartyPage";
 import styled from "styled-components";
 
-import "./app.less";
-
-const Title = styled.div`color: red`;
-
-export default class App extends React.PureComponent {
-    public render() {
-        return <Title>
-            Hi there!!!
-        </Title>
-    }
+const App: React.FunctionComponent<any> = ({ className }) => {
+    return (<div className={className}>
+        <PartyPage/>
+    </div>)
 }
+
+export default styled(App)`
+    width: 810px;
+    margin: 140px auto;
+`;
