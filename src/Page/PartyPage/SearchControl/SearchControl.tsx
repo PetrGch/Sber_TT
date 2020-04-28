@@ -1,11 +1,12 @@
 import * as React from "react";
-import styled from "styled-components";
-import SearchResult from "./SearchResult/SearchResult";
 import { useState } from "react";
-import { SearchControlProps } from "./SearchControl.type";
-import { useLazyQuery } from "@apollo/react-hooks";
-import { GET_CHARACTERS } from "./SearchControl.gql";
+import styled from "styled-components";
 import { debounce } from "lodash"
+import { useLazyQuery } from "@apollo/react-hooks";
+
+import SearchResult from "./SearchResult/SearchResult";
+import { SearchControlProps } from "./SearchControl.type";
+import { GET_CHARACTERS } from "./SearchControl.gql";
 
 const SearchInput = styled.input`
     display: block;
@@ -17,21 +18,22 @@ const SearchInput = styled.input`
     text-transform: uppercase;
 `;
 
-const SearchControl: React.FunctionComponent<SearchControlProps>  = (props) => {
+const SearchControl: React.FunctionComponent<SearchControlProps>  = () => {
     const [ getCharacters, { data, loading } ] = useLazyQuery(GET_CHARACTERS, {
         variables: { name }
       });
     const [ searchValue, setSearchValue ] = useState("");  
-    const onSearchValueChange = ({ target }: any) => {
-        setSearchValue(target.value);
-        
-        if (target.value.length > 1) {
+    const onSearchValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        setSearchValue(value);
+
+        if (value.length > 2) {
             debounce(
-                () => {getCharacters({ variables: { name: target.value } } as any);},
+                () => {getCharacters({ variables: { name: value } } as any);},
                 250)();
         }
     }
-    
+
     return (
         <>
             <SearchInput

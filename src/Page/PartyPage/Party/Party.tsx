@@ -29,7 +29,7 @@ const MortyPartyCard = styled(Card)`
     margin-left: 15px;
 `;
 
-const SELECTED_CHARACTERS = gql`
+export const SELECTED_CHARACTERS = gql`
     query SelectCard {
         selectedCharacters {
             rick @client
@@ -41,7 +41,7 @@ const SELECTED_CHARACTERS = gql`
 const Party: React.FunctionComponent<PartyProps> = ({ className }) => {
     const { data } = useQuery(SELECTED_CHARACTERS);
     const { rick, morty } = data.selectedCharacters
-    console.log(rick, morty)
+
     return (
         <section className={className}>
             <RickPartyCard imgSrc={rick && rick.image}><span>RICK</span></RickPartyCard>

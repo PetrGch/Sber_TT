@@ -34,14 +34,6 @@ module.exports = {
                 loader: "source-map-loader"
             },
             {
-                test: /\.css$/,
-                use: [
-                    {
-                        loader: 'css-loader', // translates CSS into CommonJS
-                    }
-                ]
-            },
-            {
                 test: /\.less$/,
                 use: [
                     {

@@ -1,9 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
-import { Character } from "../../../PartyPage.type";
+import { useMutation } from "@apollo/react-hooks";
+
 import { SearchResultCardProps } from "./SearchResultCard.type";
-import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { DELETE_CARD, SELECT_CARD } from "./SearchResultCard.gql";
 
 const Card = styled.div<{ imgSrc?: string }>`
     width: 100%;
@@ -28,18 +28,6 @@ const Cross = styled.span`
     font-weight: 700;
     cursor: pointer;
 `
-
-const DELETE_CARD = gql`
-  mutation DeleteCard($id: Int!) {
-    deleteCard(id: $id) @client
-  }
-`;
-
-const SELECT_CARD = gql`
-  mutation SelectCard($character: Character) {
-    selectCard(character: $character) @client
-  }
-`;
 
 const SearchResultCard: React.FunctionComponent<SearchResultCardProps> = ({ character, className }) => {
     const [deleteCard] = useMutation(DELETE_CARD, { variables: { id: character.id } });

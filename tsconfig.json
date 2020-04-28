@@ -9,7 +9,10 @@
       "noImplicitAny": true,
       "noImplicitThis": true,
       "strictNullChecks": true,
-      "experimentalDecorators": true
+      "experimentalDecorators": true,
+      "types": ["jest"],
+      "typeRoots": ["./types", "./node_modules/@types"],
+      "esModuleInterop": true,
     },
     "include": [
       "./src"
