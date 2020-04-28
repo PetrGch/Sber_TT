@@ -3,8 +3,9 @@ import styled from "styled-components";
 import SearchResult from "./SearchResult/SearchResult";
 import { useState } from "react";
 import { SearchControlProps } from "./SearchControl.type";
-import { useApolloClient, useQuery, useLazyQuery } from "@apollo/react-hooks";
-import { gql, FetchMoreQueryOptions } from "apollo-boost";
+import { useLazyQuery } from "@apollo/react-hooks";
+import { GET_CHARACTERS } from "./SearchControl.gql";
+import { debounce } from "lodash"
 
 const SearchInput = styled.input`
     display: block;
@@ -16,28 +17,20 @@ const SearchInput = styled.input`
     text-transform: uppercase;
 `;
 
-const GET_CHARACTERS = gql`
-query Characters($name: String)
-{
-  characters(filter: { name: $name }) {
-    results {
-      id,
-      name
-    }
-  }
-}
-`;
-
 const SearchControl: React.FunctionComponent<SearchControlProps>  = (props) => {
-    const [ getCharacters, { data, loading, error } ] = useLazyQuery(GET_CHARACTERS, {
+    const [ getCharacters, { data, loading } ] = useLazyQuery(GET_CHARACTERS, {
         variables: { name }
       });
     const [ searchValue, setSearchValue ] = useState("");  
     const onSearchValueChange = ({ target }: any) => {
         setSearchValue(target.value);
-        getCharacters({ variables: { name: target.value } } as any);
+        
+        if (target.value.length > 1) {
+            debounce(
+                () => {getCharacters({ variables: { name: target.value } } as any);},
+                250)();
+        }
     }
-    console.log(data, loading, searchValue)
     
     return (
         <>
@@ -47,7 +40,7 @@ const SearchControl: React.FunctionComponent<SearchControlProps>  = (props) => {
                 onChange={onSearchValueChange}
                 value={searchValue}
             />
-            {loading ? <h3>Loading ...</h3> : <SearchResult characters={data}/>}
+            {loading ? <h3>Loading ...</h3> : <SearchResult characters={(data && data.characters.results) || []}/>}
         </>
     )
 }
