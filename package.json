@@ -43,7 +43,7 @@
     "apollo-boost": "^0.4.7",
     "graphql": "^15.0.0",
     "jest-cli": "^25.4.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
